@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baitap02</title>
+    <style>
+        body {
+            font-family: Arial;
+            display: flex;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        .todo-container {
+            width: 400px;
+        }
+
+        .input-area {
+            display: flex;
+            gap: 10px;
+        }
+
+        #taskInput {
+            flex: 1;
+            padding: 8px;
+        }
+
+        .task-grid {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            row-gap: 10px;
+            margin-top: 20px;
+        }
+
+        .task {
+            padding: 8px;
+            background: #f2f2f2;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 6px 10px;
+            cursor: pointer;
+        }
+
+        .edit {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .delete {
+            background: #dc3545;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="todo-container">
+        <h2>Todo List</h2>
+
+        <div class="input-area">
+            <input type="text" id="taskInput" placeholder="Enter task...">
+            <button id="addBtn">Add</button>
+        </div>
+
+        <div id="taskList" class="task-grid"></div>
+    </div>
+    <script>
+        let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+        const input = document.getElementById("taskInput");
+        const addBtn = document.getElementById("addBtn");
+        const taskList = document.getElementById("taskList");
+
+        function save() {
+            localStorage.setItem("tasks", JSON.stringify(tasks));
+        }
+
+        function render() {
+            taskList.innerHTML = ""; // clear
+
+            tasks.forEach((task, index) => {
+                taskList.innerHTML += `
+            <div class="task">${task}</div>
+            <button class="edit" onclick="editTask(${index})">Edit</button>
+            <button class="delete" onclick="deleteTask(${index})">Delete</button>
+        `;
+            });
+        }
+
+        function addTask() {
+            if (input.value.trim() === "") return;
+
+            tasks.push(input.value.trim());
+            input.value = "";
+            save();
+            render();
+        }
+
+        function deleteTask(index) {
+            tasks.splice(index, 1);
+            save();
+            render();
+        }
+
+        function editTask(index) {
+            let newTask = prompt("Edit task:", tasks[index]);
+            if (newTask !== null && newTask.trim() !== "") {
+                tasks[index] = newTask.trim();
+                save();
+                render();
+            }
+        }
+
+        addBtn.addEventListener("click", addTask);
+
+        // Load initial
+        render();
+
+    </script>
+</body>
+
+</html>

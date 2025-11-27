@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .carousel-container {
+        position: relative;
+        width: 80%;
+        max-width: 800px;
+        margin: auto;
+        overflow: hidden;
+    }
+
+    .carousel {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
+    }
+
+    .slide {
+        width: 100%;
+        flex-shrink: 0;
+    }
+
+    .prev,
+    .next {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.5);
+        border: none;
+        padding: 10px;
+        color: white;
+        cursor: pointer;
+        font-size: 20px;
+    }
+
+    .prev {
+        left: 10px;
+    }
+
+    .next {
+        right: 10px;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+
+        .prev,
+        .next {
+            font-size: 16px;
+            padding: 6px;
+        }
+    }
+</style>
+
+<body>
+    <div class="carousel-container">
+        <button class="prev">❮</button>
+
+        <div class="carousel">
+            <img src="images/img01.jpg" class="slide">
+            <img src="images/img02.jpg" class="slide">
+            <img src="images/img03.jfif" class="slide">
+            <img src="images/img04.jfif" class="slide">
+            <img src="images/img05.jfif" class="slide">
+            <img src="images/img06.jfif" class="slide">
+        </div>
+
+        <button class="next">❯</button>
+    </div>
+<script>
+    const carousel = document.querySelector(".carousel");
+    const slides = document.querySelectorAll(".slide");
+    const nextBtn = document.querySelector(".next");
+    const prevBtn = document.querySelector(".prev");
+
+    let index = 0;
+    const totalSlides = slides.length;
+
+    function showSlide(i) {
+        carousel.style.transform = `translateX(${-i * 100}%)`;
+    }
+
+    function nextSlide() {
+        index = (index + 1) % totalSlides;  // vòng lại đầu
+        showSlide(index);
+    }
+
+    function prevSlide() {
+        index = (index - 1 + totalSlides) % totalSlides; // vòng lại cuối
+        showSlide(index);
+    }
+
+    nextBtn.addEventListener("click", nextSlide);
+    prevBtn.addEventListener("click", prevSlide);
+
+    // Auto slide 3 giây
+    setInterval(nextSlide, 3000);
+
+</script>
+</body>
+
+</html>
